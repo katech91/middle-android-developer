@@ -8,9 +8,7 @@
 .externalNativeBuild
 .cxx
 local.properties
-
-
-/gradle
+/gradle/
 /build.gradle
 /gradle.properties
 /gradlew
@@ -22,4 +20,3 @@ local.properties
 /app/src/androidTest
 /app/src/main/res
 /app/src/main/AndroidManifest.xml
-
