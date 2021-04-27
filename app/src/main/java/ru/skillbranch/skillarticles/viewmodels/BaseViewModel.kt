@@ -61,7 +61,7 @@ class ViewModelFactory(private val params: String): ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
             return ArticleViewModel(params) as T
         }
-        throw IllegalArgumentException("Anknown view model class")
+        throw IllegalArgumentException("Unknown view model class")
     }
 }
 
@@ -75,6 +75,8 @@ class Event<out E>(private val content: E) {
             content
         }
     }
+
+    fun peekContent(): E = content
 }
 
 class EventObserver<E>(private val onEventUnhandledContent: (E) -> Unit): Observer<Event<E>>{
