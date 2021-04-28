@@ -18,7 +18,7 @@ class SubmenuBehavior: CoordinatorLayout.Behavior<ArticleSubmenu>() {
         return dependency is Bottombar
     }
 
-    //will be called if denedent view has been changed
+    //will be called if dependent view has been changed
     override fun onDependentViewChanged(
             parent: CoordinatorLayout,
             child: ArticleSubmenu,

@@ -84,7 +84,7 @@ class ArticleViewModel(private val articleId: String): BaseViewModel<ArticleStat
         }
 
         toggleLike()
-        val msg = if (currentState.isLike) Notify.TextMessage("Mark as liked")
+        val msg = if (currentState.isLike) Notify.TextMessage("Mark is liked")
         else {
             Notify.ActionMessage(
                     "Don't like it anymore", //message
