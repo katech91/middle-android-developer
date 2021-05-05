@@ -20,10 +20,9 @@
             android:layout_height="?attr/actionBarSize"
             app:logo="@drawable/logo_placeholder"
             app:title="@string/app_name"
-            app:subtitle="loadind..."
+            app:subtitle="loading..."
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            android:elevation="4dp"
-            />
+            android:elevation="4dp"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
