@@ -6,6 +6,7 @@ import ru.skillbranch.skillarticles.data.*
 object ArticleRepository {
     private val local = LocalDataHolder
     private val network = NetworkDataHolder
+    private val prefs: PrefManager = PrefManager()
 
     fun loadArticleContent(articleId: String): LiveData<List<Any>?> {
         return network.loadArticleContent(articleId) //5s delay from network
@@ -18,9 +19,11 @@ object ArticleRepository {
         return local.findArticlePersonalInfo(articleId) //1s delay from db
     }
 
-    fun getAppSettings(): LiveData<AppSettings> = local.getAppSettings() //from preferences
+    fun getAppSettings(): LiveData<AppSettings> = prefs.settings //from preferences
+
     fun updateSettings(appSettings: AppSettings) {
-        local.updateAppSettings(appSettings)
+        prefs.isBigText = appSettings.isBigText
+        prefs.isDarkMode = appSettings.isDarkMode
     }
 
     fun updateArticlePersonalInfo(info: ArticlePersonalInfo) {
