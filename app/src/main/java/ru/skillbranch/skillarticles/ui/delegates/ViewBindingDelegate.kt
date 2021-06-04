@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.ui.custom.delegates
+package ru.skillbranch.skillarticles.ui.delegates
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
