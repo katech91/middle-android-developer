@@ -16,6 +16,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.text.getSpans
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
@@ -28,8 +29,10 @@ import ru.skillbranch.skillarticles.ui.delegates.viewBinding
 import ru.skillbranch.skillarticles.viewmodels.*
 
 class RootActivity : AppCompatActivity(), IArticleView {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var viewModelFactory: ViewModelProvider.Factory = ViewModelFactory(this, "0")
 
-    private val viewModel: ArticleViewModel by viewModels { ViewModelFactory(this,"0") }
+    private val viewModel: ArticleViewModel by viewModels { viewModelFactory }
     private val vb: ActivityRootBinding by viewBinding(ActivityRootBinding::inflate)
 
     private val vbBottombar
