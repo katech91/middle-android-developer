@@ -1,5 +1,7 @@
 package ru.skillbranch.skillarticles.extensions
 
+import android.util.Log
+
 fun String?.indexesOf(
     substr: String,
     ignoreCase: Boolean = true
@@ -15,7 +17,10 @@ fun String?.indexesOf(
     }
     val matches = regex.findAll(this.toString(), 0)
     var result: MutableList<Int> = mutableListOf()
-    matches.forEach { result.add(it.range.first) }
+    matches.forEach {
+        result.add(it.range.first)
+    }
+    Log.d("M_String","result: $result")
     return result
 }
 

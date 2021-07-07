@@ -60,7 +60,7 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     }
 
     //load text from network
-    override fun getArticleContent(): LiveData<List<Any>?> {
+    override fun getArticleContent(): LiveData<List<String>?> {
         return repository.loadArticleContent(articleId)
     }
 
@@ -140,11 +140,15 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     override fun handleSearch(query: String?) {
         query ?:return
 
-        val result = (currentState.content.firstOrNull() as String).indexesOf(query)
-            .map { it to it + query.length }
+        val result = currentState.content.firstOrNull().indexesOf(query)
+            .map {
+                it to it + query.length
+            }
 
 
-        updateState { it.copy(searchQuery = query, searchResults = result) }
+        updateState {
+            it.copy(searchQuery = query, searchResults = result)
+        }
     }
 
     override fun handleUpResult() {
@@ -176,7 +180,7 @@ data class ArticleState (
         val date: String? = null,
         val author: Any? = null,
         val poster: String? = null,
-        val content: List<Any> = emptyList(),
+        val content: List<String> = emptyList(),
         val reviews: List<Any> = emptyList()
 ): VMState {
     override fun toBundle(): Bundle {
@@ -187,7 +191,7 @@ data class ArticleState (
         return bundleOf(*map)
     }
 
-    override fun fromBundle(bundle: Bundle): VMState? {
+    override fun fromBundle(bundle: Bundle): ArticleState? {
         val map = bundle.keySet().associateWith { bundle[it] }
         return copy(
             isAuth = map["isAuth"] as Boolean,
@@ -209,7 +213,7 @@ data class ArticleState (
             date = map["date"] as String?,
             author = map["author"] as Any?,
             poster = map["poster"] as String?,
-            content = map["content"] as List<Any>,
+            content = map["content"] as List<String>,
             reviews = map["reviews"] as List<Any>
         )
     }
@@ -231,7 +235,7 @@ data class SubmenuData (
     val isDarkMode: Boolean = false
 )
 
-fun ArticleState.toBottomBarData() =
+fun ArticleState.toBottombarData() =
     BottombarData(isLike, isBookmark, isShowMenu, isSearch, searchResults.size, searchPosition)
 
 fun ArticleState.toSubmenuData() = SubmenuData(isShowMenu, isBigText, isDarkMode)
