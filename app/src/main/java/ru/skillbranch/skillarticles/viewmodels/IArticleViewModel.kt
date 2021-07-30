@@ -9,7 +9,7 @@ interface IArticleViewModel {
      * Получение полной информации о статье из сети
      * (или базы данных если она сохранена, наличие статьи в базе не надо реализовывать в данном уроке)
      */
-    fun getArticleContent(): LiveData<List<String>?>
+    fun getArticleContent(): LiveData<String?>
 
     /**
      * Получение краткой информации о статье из базы данных
@@ -79,7 +79,7 @@ interface IArticleViewModel {
      * обрабока поискового запроса, необходимо сохранить поисковый запрос и отображать его в
      * searchView при изменении конфигурации (пересоздании активити)
      */
-    fun handleSearch(query: String?)
+//    fun handleSearch(query: String?)
 
     /**
      * перместиться к предыдущему совпадению поиска

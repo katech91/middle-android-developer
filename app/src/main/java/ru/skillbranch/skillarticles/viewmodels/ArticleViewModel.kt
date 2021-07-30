@@ -10,7 +10,6 @@ import ru.skillbranch.skillarticles.data.ArticlePersonalInfo
 import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.asMap
 import ru.skillbranch.skillarticles.extensions.format
-import ru.skillbranch.skillarticles.extensions.indexesOf
 
 class ArticleViewModel(private val articleId: String, savedStateHandle: SavedStateHandle):
     BaseViewModel<ArticleState>(ArticleState(), savedStateHandle),
@@ -60,7 +59,7 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     }
 
     //load text from network
-    override fun getArticleContent(): LiveData<List<String>?> {
+    override fun getArticleContent(): LiveData<String?> {
         return repository.loadArticleContent(articleId)
     }
 
@@ -137,19 +136,20 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
         updateState { it.copy(isSearch = isSearch, isShowMenu = false, searchPosition = 0) }
     }
 
-    override fun handleSearch(query: String?) {
-        query ?:return
-
-        val result = currentState.content.firstOrNull().indexesOf(query)
-            .map {
-                it to it + query.length
-            }
-
-
-        updateState {
-            it.copy(searchQuery = query, searchResults = result)
-        }
-    }
+//    override fun handleSearch(query: String?) {
+//        query ?:return
+//
+//        val result = currentState.content.firstOrNull()
+//            .indexesOf(query)
+//            .map {
+//                it to it + query.length
+//            }
+//
+//
+//        updateState {
+//            it.copy(searchQuery = query, searchResults = result)
+//        }
+//    }
 
     override fun handleUpResult() {
         updateState { it.copy(searchPosition = it.searchPosition.dec()) }
@@ -160,31 +160,31 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     }
 }
 
-data class ArticleState (
-        val isAuth: Boolean = false,
-        val isLoadingContent: Boolean = true,
-        val isLoadingReviews: Boolean = true,
-        val isLike: Boolean = false,
-        val isBookmark: Boolean = false,
-        val isShowMenu: Boolean = false,
-        val isBigText: Boolean = false,
-        val isDarkMode: Boolean = false,
-        val isSearch: Boolean = false,
-        val searchQuery: String? = null,
-        val searchResults: List<Pair<Int, Int>> = emptyList(),
-        val searchPosition: Int = 0,
-        val shareLink: String? = null,
-        val title: String? = null,
-        val category: String? = null,
-        val categoryIcon: Any? = null,
-        val date: String? = null,
-        val author: Any? = null,
-        val poster: String? = null,
-        val content: List<String> = emptyList(),
-        val reviews: List<Any> = emptyList()
+data class ArticleState(
+    val isAuth: Boolean = false,
+    val isLoadingContent: Boolean = true,
+    val isLoadingReviews: Boolean = true,
+    val isLike: Boolean = false,
+    val isBookmark: Boolean = false,
+    val isShowMenu: Boolean = false,
+    val isBigText: Boolean = false,
+    val isDarkMode: Boolean = false,
+    val isSearch: Boolean = false,
+    val searchQuery: String? = null,
+    val searchResults: List<Pair<Int, Int>> = emptyList(),
+    val searchPosition: Int = 0,
+    val shareLink: String? = null,
+    val title: String? = null,
+    val category: String? = null,
+    val categoryIcon: Any? = null,
+    val date: String? = null,
+    val author: Any? = null,
+    val poster: String? = null,
+    val content: String = "Loading",
+    val reviews: List<Any> = emptyList()
 ): VMState {
     override fun toBundle(): Bundle {
-        val map = copy(content = emptyList(), isLoadingContent = true)
+        val map = copy(content = "Loading", isLoadingContent = true)
             .asMap()
             .toList()
             .toTypedArray()
@@ -213,7 +213,7 @@ data class ArticleState (
             date = map["date"] as String?,
             author = map["author"] as Any?,
             poster = map["poster"] as String?,
-            content = map["content"] as List<String>,
+            content = map["content"] as String,
             reviews = map["reviews"] as List<Any>
         )
     }
