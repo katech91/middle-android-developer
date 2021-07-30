@@ -28,6 +28,7 @@ fun Context.dpToIntPx(dp: Int): Int {
 
 fun Context.attrValue(attr: Int): Int {
     //Todo черт его знает, как писать
+
     return Color.BLACK
 }
 

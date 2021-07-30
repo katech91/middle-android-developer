@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -204,14 +205,14 @@ class RootActivity : AppCompatActivity(), IArticleView {
         }
 
         //bind content
-        vb.tvTextContent.text = if (data.isLoadingContent) "loading"
-            else data.content.first() as String
+//        vb.tvTextContent.text = if (data.isLoadingContent) "loading"
+//            else data.content.first() as String
 
         //bind toolbar
         with(vb.toolbar){
             title = data.title ?: "loading"
             subtitle = data.category ?: "loading"
-            if (data.categoryIcon != null) logo = getDrawable(data.categoryIcon as Int)
+            if (data.categoryIcon != null) logo = ContextCompat.getDrawable(context, data.categoryIcon as Int)
         }
 
         if (data.isLoadingContent) return
