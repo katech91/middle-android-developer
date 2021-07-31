@@ -95,6 +95,12 @@ class IconLinkSpan(
     }
 
     private inline fun Paint.forText(block: () -> Unit) {
-        //TODO implement me
+        val oldColor = color
+        color = textColor
+
+        block()
+
+        //restore
+        color = oldColor
     }
 }

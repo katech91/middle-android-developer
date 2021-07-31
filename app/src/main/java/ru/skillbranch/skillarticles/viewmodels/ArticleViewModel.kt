@@ -10,11 +10,15 @@ import ru.skillbranch.skillarticles.data.ArticlePersonalInfo
 import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.asMap
 import ru.skillbranch.skillarticles.extensions.format
+import ru.skillbranch.skillarticles.extensions.indexesOf
+import ru.skillbranch.skillarticles.markdown.MarkdownParser
 
 class ArticleViewModel(private val articleId: String, savedStateHandle: SavedStateHandle):
     BaseViewModel<ArticleState>(ArticleState(), savedStateHandle),
     IArticleViewModel {
     private val repository = ArticleRepository
+    private var clearContent: String? = null
+
     init {
         //set custom saved state provider for non serializable or custom states
         savedStateHandle.setSavedStateProvider("state"){
@@ -136,20 +140,18 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
         updateState { it.copy(isSearch = isSearch, isShowMenu = false, searchPosition = 0) }
     }
 
-//    override fun handleSearch(query: String?) {
-//        query ?:return
-//
-//        val result = currentState.content.firstOrNull()
-//            .indexesOf(query)
-//            .map {
-//                it to it + query.length
-//            }
-//
-//
-//        updateState {
-//            it.copy(searchQuery = query, searchResults = result)
-//        }
-//    }
+    override fun handleSearch(query: String?) {
+        query ?: return
+
+        if (clearContent == null) clearContent = MarkdownParser.clear(currentState.content)
+
+        val result = clearContent.indexesOf(query)
+            .map { it to it +query.length }
+
+        updateState {
+            it.copy(searchQuery = query, searchResults = result)
+        }
+    }
 
     override fun handleUpResult() {
         updateState { it.copy(searchPosition = it.searchPosition.dec()) }

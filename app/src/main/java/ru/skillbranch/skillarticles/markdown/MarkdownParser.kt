@@ -326,3 +326,33 @@ sealed class Element(){
         override val elements: List<Element> = emptyList()
     ) : Element()
 }
+
+private fun  Element.spread(): List<Element> {
+    val elements = mutableListOf<Element>()
+    if (this.elements.isNotEmpty()) elements.addAll(this.elements.spread())
+    else elements.add(this)
+    return  elements
+}
+
+private fun List<Element>.spread(): List<Element> {
+    val elements = mutableListOf<Element>()
+    forEach { elements.addAll(it.spread()) }
+    return elements
+}
+
+private fun Element.clearContent(): String {
+    return StringBuilder().apply {
+        val element = this@clearContent
+        if (element.elements.isEmpty()) append(element.text)
+        else element.elements.forEach { append(it.clearContent()) }
+    }.toString()
+}
+
+private fun MarkdownText.clearContent(): String {
+    return java.lang.StringBuilder().apply {
+        elements.forEach {
+            if (it.elements.isEmpty()) append(it.text)
+            else it.elements.forEach { el -> append(el.clearContent()) }
+        }
+    }.toString()
+}

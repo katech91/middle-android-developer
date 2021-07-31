@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.extensions
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
@@ -28,7 +29,7 @@ fun Context.dpToIntPx(dp: Int): Int {
 
 fun Context.attrValue(attr: Int): Int {
     //Todo черт его знает, как писать
-
+    //this.theme.resolveAttribute(attr)
     return Color.BLACK
 }
 
