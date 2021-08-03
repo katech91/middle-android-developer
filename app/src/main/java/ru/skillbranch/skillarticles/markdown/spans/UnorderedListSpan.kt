@@ -43,7 +43,6 @@ class UnorderedListSpan(
         val oldColor = color
         val oldStyle = style
 
-        //странно, что в этом методе используются данные для конкретно bullet
         color = bulletColor
         style = Paint.Style.FILL
 
