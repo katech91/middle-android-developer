@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.markdown.spans
+package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -24,9 +24,9 @@ class BlockquotesSpan(
         paint.withCustomColor {
             canvas.drawLine(
                 quoteWidth/2f,
-                lineTop.toFloat(),
+                lineTop.toFloat() - paint.descent(),
                 quoteWidth/2f,
-                lineBottom.toFloat(),
+                lineBottom.toFloat() - paint.descent(),
                 paint
             )
         }

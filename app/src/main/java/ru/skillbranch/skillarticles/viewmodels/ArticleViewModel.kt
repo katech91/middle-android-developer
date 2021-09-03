@@ -11,7 +11,7 @@ import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.asMap
 import ru.skillbranch.skillarticles.extensions.format
 import ru.skillbranch.skillarticles.extensions.indexesOf
-import ru.skillbranch.skillarticles.markdown.MarkdownParser
+import ru.skillbranch.skillarticles.data.repositories.MarkdownParser
 
 class ArticleViewModel(private val articleId: String, savedStateHandle: SavedStateHandle):
     BaseViewModel<ArticleState>(ArticleState(), savedStateHandle),

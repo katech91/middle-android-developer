@@ -2,6 +2,7 @@ package ru.skillbranch.skillarticles.extensions
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -27,10 +28,10 @@ fun Context.dpToIntPx(dp: Int): Int {
     ).toInt()
 }
 
-fun Context.attrValue(attr: Int): Int {
-    //Todo черт его знает, как писать
-    //this.theme.resolveAttribute(attr)
-    return Color.BLACK
+fun Context.attrValue(res: Int): Int {
+    val tv = TypedValue()
+    if(this.theme.resolveAttribute(res, tv, true)) return tv.data
+    else throw Resources.NotFoundException("Unknonw resurse with id $res")
 }
 
 val Context.isNetworkAvailable: Boolean

@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.markdown.spans
+package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -39,9 +39,9 @@ class HorizontalRuleSpan(
         paint.forLine {
             canvas.drawLine(
                 0f,
-                (top + bottom)/2f,
+                (top + y)/2f - paint.descent(),
                 canvas.width.toFloat(),
-                (top + bottom)/2f,
+                (top + y)/2f - paint.descent(),
                 paint
             )
         }
