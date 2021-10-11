@@ -22,13 +22,18 @@ import ru.skillbranch.skillarticles.extensions.dpToPx
 
 class MarkdownTextView @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    fontSize: Float,
     private val isSizeDepend: Boolean = true
-):  AppCompatTextView(context, attrs, defStyleAttr) {
+):  AppCompatTextView(context, null, 0), IMarkdownView {
 
-//    override val spannableContent: Spannable
-//        get() = text as Spannable
+    override var fontSize: Float = fontSize
+        set(value) {
+            textSize = value
+            field = value
+        }
+
+    override val spannableContent: Spannable
+        get() = text as Spannable
 
 
     private val color = context.attrValue(R.attr.colorOnBackground)
@@ -42,11 +47,11 @@ class MarkdownTextView @JvmOverloads constructor(
         requestRectangleOnScreen(focusRect, false)
     }
 
-//    init {
-//        setTextColor(color)
-//        textSize = fontSize
-//        movementMethod = LinkMovementMethod()
-//    }
+    init {
+        setTextColor(color)
+        textSize = fontSize
+        movementMethod = LinkMovementMethod()
+    }
 
 
     override fun onDraw(canvas: Canvas) {
