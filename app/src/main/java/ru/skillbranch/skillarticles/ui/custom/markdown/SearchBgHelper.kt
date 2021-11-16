@@ -16,6 +16,7 @@ import ru.skillbranch.skillarticles.extensions.*
 import ru.skillbranch.skillarticles.ui.custom.spans.HeaderSpan
 import ru.skillbranch.skillarticles.ui.custom.spans.SearchFocusSpan
 import ru.skillbranch.skillarticles.ui.custom.spans.SearchSpan
+import kotlin.math.min
 
 //for test constructor
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -73,7 +74,7 @@ class SearchBgHelper(
         setStroke(borderWidth, secondaryColor)
     }
 
-    private val drawableRight: Drawable = mockDrawableLeft ?: GradientDrawable().apply {
+    private val drawableRight: Drawable = mockDrawableRight ?: GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE
         cornerRadii = floatArrayOf(
             0f, 0f,  // Top left radius in px
