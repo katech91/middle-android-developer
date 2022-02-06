@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.ui.custom.markdown
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
@@ -19,6 +20,7 @@ import kotlin.properties.Delegates
 import ru.skillbranch.skillarticles.extensions.groupByBounds
 import java.lang.Math.E
 
+@SuppressLint("ViewConstructor")
 class MarkdownContentView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -28,8 +30,10 @@ class MarkdownContentView @JvmOverloads constructor(
     private var elements: List<MarkdownElement> = emptyList()
 
     //for restore
-    //git test
+    private var ids = arrayListOf<Int>()
     private var layoutManager: LayoutManager = LayoutManager()
+
+    private val mapId: MutableMap<Int, Int> = mutableMapOf()
 
     var textSize by Delegates.observable(14f) { _, old, value ->
         if (old == value) return@observable
@@ -106,20 +110,22 @@ class MarkdownContentView @JvmOverloads constructor(
                         context,
                         textSize,
                         it.image.url,
-                        it.image.text,
+                        it.image.text.toString(),
                         it.image.alt
                     )
                     addView(iv)
+                    layoutManager.attachToParent(iv, iv.id) //TODO id or smth else?
                 }
 
                 is MarkdownElement.Scroll -> {
                     val sv = MarkdownCodeView(
                         context,
                         textSize,
-                        it.blockCode.text
+                        it.blockCode.text.toString()
                     )
                     sv.copyListener = copyListener
                     addView(sv)
+                    layoutManager.attachToParent(sv, sv.id) //TODO check what do we need id or smth else
                 }
             }
         }
@@ -180,10 +186,13 @@ class MarkdownContentView @JvmOverloads constructor(
     }
 
     override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>?) {
-        children.filter { it !is MarkdownTextView }
-            .forEach {
+        //save children manually without markdown text view
+        children
+            .forEachIndexed { ind, it ->
+                Log.e("MarkdwnContentView", "dispatchSaveInstanceState ${it.id}")
                 if (it !is MarkdownTextView) it.saveHierarchyState(layoutManager.container)
             }
+        //save only MarkdownContentView
         dispatchFreezeSelfOnly(container)
     }
 
@@ -191,6 +200,16 @@ class MarkdownContentView @JvmOverloads constructor(
         super.onRestoreInstanceState(state)
         if (state is SavedState) layoutManager = state.layout
     }
+
+    override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
+        val superState = container?.get(id) as SavedState
+        layoutManager = superState.layout
+        children.forEachIndexed { ind, it ->
+            if (it !is MarkdownTextView) layoutManager.restoreChild(it, ind)
+        }
+        super.dispatchRestoreInstanceState(container)
+    }
+
     private class LayoutManager(): Parcelable {
         var ids: MutableMap<Int, Int> = LinkedHashMap()
         var container: SparseArray<Parcelable> = SparseArray()
@@ -220,7 +239,7 @@ class MarkdownContentView @JvmOverloads constructor(
         }
 
         fun restoreChild(view: View, index: Int) {
-            Log.e("MarkdownContentView", "restoreChild ${view.id} $index")
+//            Log.e("MarkdownContentView", "restoreChild ${view.id} $index")
             view.id = ids[index]!!
             view.restoreHierarchyState(container)
         }

@@ -116,7 +116,7 @@ class SearchBgHelper(
             topExstraPadding = 0
             bottomExstraPadding = 0
 
-            //if searchv
+            //if search
             if (it is SearchFocusSpan) {
                 //if search focus invoke for focus
                 focusListener(layout.getLineTop(startLine), layout.getLineBottom(endLine))

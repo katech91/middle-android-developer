@@ -3,7 +3,10 @@ package ru.skillbranch.skillarticles.ui.custom.markdown
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.Spannable
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -72,6 +75,9 @@ class MarkdownImageView private constructor(
     }
 
     init {
+        //set id for view
+        id = View.generateViewId()
+
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         ivImage = ImageView(context).apply {
             outlineProvider = object : ViewOutlineProvider() {
@@ -231,6 +237,39 @@ class MarkdownImageView private constructor(
         )
         va.doOnEnd { tvAlt?.isVisible = false }
         va.start()
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        Log.e("MarkdownImageView", "save state $id")
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.ssIsOpen = tvAlt?.isVisible ?: false
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        Log.e("MarkdownImageView", "restore state $id")
+        super.onRestoreInstanceState(state)
+        if (state is SavedState) {
+            tvAlt?.isVisible = state.ssIsOpen
+        }
+    }
+
+    private class SavedState: BaseSavedState, Parcelable {
+        var ssIsOpen = false
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(src: Parcel) : super(src) {
+            ssIsOpen = src.readInt() == 1
+        }
+
+        override fun writeToParcel(out: Parcel?, flags: Int) {
+            super.writeToParcel(out, flags)
+            out?.writeInt(if (ssIsOpen) 1 else 0)
+        }
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel) = SavedState(parcel)
+            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+        }
     }
 }
 
